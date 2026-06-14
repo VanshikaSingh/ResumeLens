@@ -8,10 +8,15 @@ function UploadScreen({ onFileSelect }: ResumeUploadProps) {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files?.[0];
+    const allowedFileFormats = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ];
 
     if (!selectedFile) return;
-
-    if (selectedFile.type !== "application/pdf") {
+    
+    if (!allowedFileFormats.includes(selectedFile.type)) {
       setError("Please upload a PDF file.");
       return;
     }
@@ -19,14 +24,15 @@ function UploadScreen({ onFileSelect }: ResumeUploadProps) {
     setError("");
     onFileSelect(selectedFile);
   };
-console.log(error, "error")
+
+
   return (
     <div className="max-w-xl mx-auto">
       <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
         <input
           type="file"
           id="resume-upload"
-          accept=".pdf"
+          accept=".pdf, .doc, .docx"
           className="hidden"
           onChange={handleFileChange}
         />
