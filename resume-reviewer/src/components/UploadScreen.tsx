@@ -1,10 +1,12 @@
 import { useState } from "react";
+import extractPdfText from "../utils/pdfParser"
 type ResumeUploadProps = {
   onFileSelect: (file: File) => void;
+  isLoading:boolean
 };
-function UploadScreen({ onFileSelect }: ResumeUploadProps) {
+function UploadScreen({ onFileSelect, isLoading }: ResumeUploadProps) {
   const [error, setError] = useState("");
-  const [isLoading, setLoading] = useState(false)
+ 
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files?.[0];
@@ -20,9 +22,9 @@ function UploadScreen({ onFileSelect }: ResumeUploadProps) {
       setError("Please upload a PDF file.");
       return;
     }
-
     setError("");
     onFileSelect(selectedFile);
+
   };
 
 
@@ -57,9 +59,8 @@ function UploadScreen({ onFileSelect }: ResumeUploadProps) {
             {error}
           </p>
         )}
-        {isLoading ?(
-          <p>Processing Resume...</p>
-         ): <p>Resume component loaded(new component)</p>}
+        {isLoading && (
+          <p>Processing Resume...</p>)}
       </div>
     </div>
   );
