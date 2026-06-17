@@ -1,18 +1,26 @@
 import { useState } from "react";
 import UploadScreen from "../components/UploadScreen";
 import extractPdfText from "../utils/pdfParser"
+import docsParser from "../utils/docxParser";
 
 function Home() {
   const [file, setFile] = useState(null);
  const [text, setText] = useState("");
  const [isLoading, setIsLoading] = useState(false);
-
+ 
   const handleFileSelect = async (selectedFile) => {
     setFile(selectedFile);
     setIsLoading(true)
     try{
-        const extractedText = await extractPdfText(selectedFile);
+        if(selectedFile.type === "application/pdf"){
+const extractedText = await extractPdfText(selectedFile);
         setText(extractedText);
+        }
+        else{
+            const extractedText = await docsParser(selectedFile);
+        setText(extractedText);
+        }
+        
         
     }catch(error){
         console.error(error)
