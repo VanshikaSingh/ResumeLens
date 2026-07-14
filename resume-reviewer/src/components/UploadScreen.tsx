@@ -1,5 +1,5 @@
 import { useState } from "react";
-import extractPdfText from "../utils/pdfParser"
+
 type ResumeUploadProps = {
   onFileSelect: (file: File) => void;
   isLoading:boolean
@@ -47,7 +47,7 @@ function UploadScreen({ onFileSelect, isLoading }: ResumeUploadProps) {
         </label>
 
         <p className="mt-3 text-gray-500">
-          Upload your resume as a PDF
+          Upload your resume as a PDF or a DOCX
         </p>
    <input
           type="file"

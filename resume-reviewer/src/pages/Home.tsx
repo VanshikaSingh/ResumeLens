@@ -2,33 +2,31 @@ import { useState } from "react";
 import UploadScreen from "../components/UploadScreen";
 import extractPdfText from "../utils/pdfParser"
 import docsParser from "../utils/docxParser";
+// import cleanResumeText from "../utils/cleanResumeText"
+import { parseResume } from "../utils/resumeParser";
 
 function Home() {
   const [file, setFile] = useState(null);
- const [text, setText] = useState("");
+ const [resumeData, setResumeData] = useState("");
  const [isLoading, setIsLoading] = useState(false);
  
   const handleFileSelect = async (selectedFile) => {
     setFile(selectedFile);
     setIsLoading(true)
     try{
-        if(selectedFile.type === "application/pdf"){
-const extractedText = await extractPdfText(selectedFile);
-        setText(extractedText);
-        }
-        else{
-            const extractedText = await docsParser(selectedFile);
-        setText(extractedText);
-        }
-        
-        
+       const rawText = selectedFile.type === "application/pdf" ? 
+         await extractPdfText(selectedFile) : 
+        await docsParser(selectedFile);
+         const parsedResume = parseResume(rawText);
+            setResumeData(parsedResume);    
+             
     }catch(error){
         console.error(error)
     }
    setIsLoading(false)
   };
 
-console.log(JSON.stringify(text));
+
   return (
     <div className="min-h-screen p-8">
       <UploadScreen onFileSelect={handleFileSelect}
@@ -39,11 +37,11 @@ console.log(JSON.stringify(text));
           <p>Selected file: {file.name}</p>
         </div>
       )}
-     {text && (
+     {resumeData && (
   <div className="mt-4">
     <h2>Extracted Text</h2>
     <div className="whitespace-wrap">
-    <p>{text}</p>
+   <pre>{JSON.stringify(resumeData, null, 4)}</pre>
     </div>
   </div>
 )}
