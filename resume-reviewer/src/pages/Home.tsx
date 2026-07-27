@@ -19,6 +19,26 @@ function Home() {
         await docsParser(selectedFile);
          const parsedResume = parseResume(rawText);
             setResumeData(parsedResume);    
+console.log("1. Parsed resume:", parsedResume);
+
+const response = await fetch("http://localhost:3000/analyze-resume", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    resume: parsedResume,
+  }),
+});
+
+console.log("2. Fetch completed");
+
+console.log("Status:", response.status);
+
+const data = await response.json();
+
+console.log("3. Response:", data);
+
              
     }catch(error){
         console.error(error)

@@ -33,7 +33,7 @@ export const parseResume = (resumeText: string) => {
         .filter(Boolean); //split text into lines;
 
     let currentSection: keyof ResumeSections | "" = "";
-   console.log(sectionPatterns.experience);
+  
     //check if the line is a Heading
     for (const line of lines) {
 
@@ -69,19 +69,14 @@ export const parseResume = (resumeText: string) => {
             continue;
         }
         if (currentSection === "experience") {
-    console.log("IN EXPERIENCE SECTION:", line);
+  
 }
         if (currentSection) {
-            console.log(
-  "APPENDING",
-  currentSection,
-  JSON.stringify(line)
-);
-console.log("FOUND EXPERIENCE HEADER:", JSON.stringify(line));
+
             sections[currentSection] += `${line}\n`;
         }
     }
-  console.log("FINAL SECTIONS", sections);
+
     return sections;
 
 }
