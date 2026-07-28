@@ -1,16 +1,25 @@
+import OpenAI from "openai";
+import { z } from "zod";
+import { zodTextFormat } from "openai/helpers/zod";
+
 import express from "express";
 import cors from "cors";
 
 import dotenv from "dotenv";
 dotenv.config();
 
-import OpenAI from "openai";
 // import { client } from "./openai";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
+//schema
+const ResumeAnalysisSchema = z.object({
+  atsScore: z.number(),
+  strengths: z.array(z.string()),
+  weaknesses: z.array(z.string()),
+  suggestions: z.array(z.string()),
+});
 const app = express();
 const PORT = 3000;
 
@@ -18,29 +27,37 @@ app.use(cors()); // connects frontend and backend
 app.use(express.json()); // lets express know that we are sending json data in the request body
 
 app.post("/analyze-resume", async (req, res) => {
-    console.log("Request received");
-  const { resume } = req.body;
+  try {
+    const { resume } = req.body;
 
-  const response = await openai.responses.create({
-    model: "gpt-5-mini",
-    input: `
+    const response = await openai.responses.parse({
+      model: "gpt-5-mini",
+      input: `
 You are an expert ATS resume reviewer.
 
-Analyze this resume:
+Analyze the following resume.
 
 ${JSON.stringify(resume, null, 2)}
-
-Give me:
-- ATS Score
-- 3 strengths
-- 3 weaknesses
 `,
-  });
+      text: {
+        format: zodTextFormat(
+          ResumeAnalysisSchema,
+          "resume_analysis"
+        ),
+      },
+    });
 
-  res.json({
-    message: response.output_text,
-  });
+    const analysis = response.output_parsed;
 
+    console.log(analysis);
+
+    res.json(analysis);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Something went wrong",
+    });
+  }
 });
 
 
