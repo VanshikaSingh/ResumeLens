@@ -3,17 +3,41 @@ import UploadScreen from "../components/UploadScreen";
 import extractPdfText from "../utils/pdfParser";
 import docsParser from "../utils/docxParser";
 import { parseResume } from "../utils/resumeParser";
+import OverviewSection from "../components/overview/OverviewSection";
 
 type ResumeAnalysis = {
-  atsScore: number;
-  strengths: string[];
-  weaknesses: string[];
-  suggestions: string[];
-};
+  overview: {
+    atsScore: number;
 
+    strengths: {
+      title: string;
+      description: string;
+    }[];
+
+    weaknesses: {
+      section: string;
+      issue: string;
+      severity: "low" | "medium" | "high";
+    }[];
+
+    suggestions: {
+      section: string;
+      recommendation: string;
+      priority: "high" | "medium" | "low";
+    }[];
+  };
+};
+export type ParsedResume = {
+  summary: string;
+  skills: string;
+  experience: string;
+  education: string;
+  projects: string;
+  certifications: string;
+};
 function Home() {
   const [file, setFile] = useState<File | null>(null);
-  const [resumeData, setResumeData] = useState<any>(null);
+  const [resumeData, setResumeData] = useState<ParsedResume | null>(null);
   const [analysis, setAnalysis] = useState<ResumeAnalysis | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -45,11 +69,11 @@ function Home() {
         throw new Error("Failed to analyze resume");
       }
 
-      const data: ResumeAnalysis = await response.json();
+      const analysis: ResumeAnalysis = await response.json();
 
-      setAnalysis(data);
+      setAnalysis(analysis);
 
-      console.log("Resume Analysis:", data);
+     
     } catch (error) {
       console.error(error);
     } finally {
@@ -64,27 +88,9 @@ function Home() {
         isLoading={isLoading}
       />
 
-      {file && (
-        <div className="mt-4">
-          <p>Selected file: {file.name}</p>
-        </div>
-      )}
-
-      {resumeData && (
-        <div className="mt-4">
-          <h2>Parsed Resume</h2>
-
-          <pre>{JSON.stringify(resumeData, null, 2)}</pre>
-        </div>
-      )}
-
-      {analysis && (
-        <div className="mt-8">
-          <h2>AI Resume Analysis</h2>
-
-          <pre>{JSON.stringify(analysis, null, 2)}</pre>
-        </div>
-      )}
+{analysis && (
+  <OverviewSection overview={analysis.overview} />
+)}
     </div>
   );
 }
