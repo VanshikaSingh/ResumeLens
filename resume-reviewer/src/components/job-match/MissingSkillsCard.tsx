@@ -6,6 +6,7 @@ type Props = {
 
 function MissingSkillsCard({ skills }: Props) {
   return (
+
     <div className="rounded-xl border border-red-200 bg-red-50 p-6 shadow-sm">
       <h3 className="mb-4 text-xl font-semibold text-red-800">
         ❌ Missing Skills
@@ -36,6 +37,7 @@ function MissingSkillsCard({ skills }: Props) {
         ))}
       </div>
     </div>
+   
   );
 }
 

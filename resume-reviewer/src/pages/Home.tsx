@@ -9,6 +9,8 @@ import ATSScoreCard from "../components/overview/ATSScoreCard";
 import MatchScoreCard from "../components/job-match/MatchScoreCard";
 import LoadingScreen from "../components/LoadingScreen";
 
+import { motion } from "framer-motion";
+
 import type { ResumeAnalysis } from "../types/resume";
 
 
@@ -67,7 +69,16 @@ function Home() {
       setIsLoading(false);
     }
   };
+  const resetAnalysis = () => {
+  setAnalysis(null);
+  setJobDescription("");
+  setFile(null);
+  setResumeData(null);
+};
 
+if (isLoading) {
+  return <LoadingScreen />;
+}
   return (
     <div className="min-h-screen p-8">
   {!analysis ? (
@@ -104,10 +115,7 @@ function Home() {
     </div>
 
     <button
-      onClick={() => {
-        setAnalysis(null);
-        setJobDescription("");
-      }}
+      onClick={resetAnalysis}
       className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700"
     >
       New Analysis
@@ -116,11 +124,14 @@ function Home() {
 )}
 
 {analysis && (
-  <>
-    <OverviewSection overview={analysis.overview} />
-
-  {analysis && (
-  <>
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{
+      duration: 0.6,
+      ease: "easeOut",
+    }}
+  >
     <div className="mx-auto mt-10 grid max-w-6xl gap-6 lg:grid-cols-2">
       <ATSScoreCard score={analysis.overview.atsScore} />
 
@@ -138,11 +149,9 @@ function Home() {
         jobMatch={analysis.jobMatch}
       />
     )}
-  </>
+  </motion.div>
 )}
-  </>
-)}
-{isLoading && <LoadingScreen />}
+
     </div>
   );
 }
