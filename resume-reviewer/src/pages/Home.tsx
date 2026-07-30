@@ -4,29 +4,11 @@ import extractPdfText from "../utils/pdfParser";
 import docsParser from "../utils/docxParser";
 import { parseResume } from "../utils/resumeParser";
 import OverviewSection from "../components/overview/OverviewSection";
+import JobMatchSection from "../components/job-match/JobMatchSection";
 
-type ResumeAnalysis = {
-  overview: {
-    atsScore: number;
+import type { ResumeAnalysis } from "../types/resume";
 
-    strengths: {
-      title: string;
-      description: string;
-    }[];
 
-    weaknesses: {
-      section: string;
-      issue: string;
-      severity: "low" | "medium" | "high";
-    }[];
-
-    suggestions: {
-      section: string;
-      recommendation: string;
-      priority: "high" | "medium" | "low";
-    }[];
-  };
-};
 export type ParsedResume = {
   summary: string;
   skills: string;
@@ -39,6 +21,7 @@ function Home() {
   const [file, setFile] = useState<File | null>(null);
   const [resumeData, setResumeData] = useState<ParsedResume | null>(null);
   const [analysis, setAnalysis] = useState<ResumeAnalysis | null>(null);
+  const [jobDescription, setJobDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleFileSelect = async (selectedFile: File) => {
@@ -55,13 +38,14 @@ function Home() {
 
       setResumeData(parsedResume);
 
-      const response = await fetch("http://localhost:3000/analyze-resume", {
+      const response = await fetch("http://localhost:3000/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           resume: parsedResume,
+            jobDescription: jobDescription.trim() || undefined,
         }),
       });
 
@@ -83,13 +67,35 @@ function Home() {
 
   return (
     <div className="min-h-screen p-8">
-      <UploadScreen
-        onFileSelect={handleFileSelect}
-        isLoading={isLoading}
-      />
+     <UploadScreen
+  onFileSelect={handleFileSelect}
+  isLoading={isLoading}
+/>
+
+<div className="mt-8 max-w-4xl mx-auto">
+  <label className="block text-lg font-semibold mb-2">
+    Job Description (Optional)
+  </label>
+
+  <textarea
+    value={jobDescription}
+    onChange={(e) => setJobDescription(e.target.value)}
+    placeholder="Paste the job description here..."
+    rows={10}
+    className="w-full rounded-lg border border-gray-300 p-4 resize-y"
+  />
+</div>
 
 {analysis && (
-  <OverviewSection overview={analysis.overview} />
+  <>
+    <OverviewSection overview={analysis.overview} />
+
+    {analysis.jobMatch && (
+      <JobMatchSection
+        jobMatch={analysis.jobMatch}
+      />
+    )}
+  </>
 )}
     </div>
   );

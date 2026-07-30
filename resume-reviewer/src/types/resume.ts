@@ -21,7 +21,37 @@ export type Overview = {
   weaknesses: Weakness[];
   suggestions: Suggestion[];
 };
+export type MissingSkill = {
+  skill: string;
+  importance: "high" | "medium" | "low";
+};
+
+export type MissingKeyword = {
+  keyword: string;
+  importance: "high" | "medium" | "low";
+};
+
+export type Improvement = {
+  title: string;
+  description: string;
+  priority: "high" | "medium" | "low";
+};
+
+export type JobMatchAnalysis = {
+  matchScore: number;
+
+  matchedSkills: string[];
+
+  missingSkills: MissingSkill[];
+
+  missingKeywords: MissingKeyword[];
+
+ experienceGap: string;
+
+  topImprovements: Improvement[];
+};
 
 export type ResumeAnalysis = {
   overview: Overview;
+  jobMatch: JobMatchAnalysis | null;
 };

@@ -6,10 +6,44 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
+import { buildResumeAnalysisPrompt } from "./prompts/resumeAnalysisPrompt";
+
 dotenv.config();
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
+});
+
+const MissingSkillSchema = z.object({
+  skill: z.string(),
+  importance: z.enum(["high", "medium", "low"]),
+});
+
+const MissingKeywordSchema = z.object({
+  keyword: z.string(),
+  importance: z.enum(["high", "medium", "low"]),
+});
+
+const ExperienceGapSchema = z.string();
+
+const ImprovementSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  priority: z.enum(["high", "medium", "low"]),
+});
+
+const JobMatchAnalysisSchema = z.object({
+  matchScore: z.number().min(0).max(100),
+
+  matchedSkills: z.array(z.string()),
+
+  missingSkills: z.array(MissingSkillSchema),
+
+  missingKeywords: z.array(MissingKeywordSchema),
+
+  experienceGap: ExperienceGapSchema,
+
+  topImprovements: z.array(ImprovementSchema).length(3),
 });
 
 const ResumeAnalysisSchema = z.object({
@@ -35,16 +69,18 @@ const ResumeAnalysisSchema = z.object({
       )
       .length(3),
 
- suggestions: z
-  .array(
-    z.object({
-      section: z.string(),
-      recommendation: z.string(),
-      priority: z.enum(["high", "medium", "low"]),
-    })
-  )
-  .length(3),
+    suggestions: z
+      .array(
+        z.object({
+          section: z.string(),
+          recommendation: z.string(),
+          priority: z.enum(["high", "medium", "low"]),
+        })
+      )
+      .length(3),
   }),
+
+  jobMatch: JobMatchAnalysisSchema.nullable(),
 });
 
 const app = express();
@@ -53,65 +89,19 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-app.post("/analyze-resume", async (req, res) => {
+app.post("/analyze", async (req, res) => {
   try {
-    const { resume } = req.body;
+    const { resume, jobDescription } = req.body;
+
+    const prompt = buildResumeAnalysisPrompt(
+      resume,
+      jobDescription
+    );
 
     const response = await openai.responses.parse({
       model: "gpt-5-mini",
 
-      input: `
-You are an expert ATS resume reviewer.
-
-Analyze the following resume.
-
-${JSON.stringify(resume, null, 2)}
-
-Return your analysis using this structure:
-
-overview
-- atsScore (0-10)
-- strengths (exactly 3)
-- weaknesses (exactly 3)
-- suggestions (exactly 3)
-
-Rules:
-
-ATS Score
-- Return a number from 0 to 10.
-
-Strengths
-- Return exactly 3.
-- Each strength must include:
-  - title
-  - description
-- Focus on what the resume does well.
-
-Weaknesses
-- Return exactly 3.
-- Each weakness must include:
-  - section
-  - issue
-  - severity (low, medium, or high)
-- Focus on ATS compatibility, readability, clarity, or missing information.
-
-Suggestions
-- Return exactly 3.
-- Each suggestion must include:
-  - section
-  - recommendation
-  - priority (high, medium, or low)
-- Prioritize recommendations based on the impact they would have on improving the resume.
-- Recommendations should be specific and actionable.
-
-Evaluate the resume based on:
-- ATS compatibility
-- Clarity
-- Readability
-- Professional presentation
-- Impact of accomplishments
-- Use of measurable achievements
-`,
+      input: prompt,
 
       text: {
         format: zodTextFormat(
@@ -122,8 +112,6 @@ Evaluate the resume based on:
     });
 
     const analysis = response.output_parsed;
-
- 
 
     res.json(analysis);
   } catch (error) {
