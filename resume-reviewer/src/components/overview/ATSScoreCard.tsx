@@ -19,7 +19,7 @@ export default function ATSScoreCard({
   }
 
   return (
-    <div className="rounded-2xl bg-white p-8 shadow-lg border border-gray-200">
+   <div className="h-full rounded-2xl border border-gray-200 bg-white p-8 shadow-lg">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium uppercase tracking-wide text-gray-500">

@@ -5,6 +5,8 @@ import docsParser from "../utils/docxParser";
 import { parseResume } from "../utils/resumeParser";
 import OverviewSection from "../components/overview/OverviewSection";
 import JobMatchSection from "../components/job-match/JobMatchSection";
+import ATSScoreCard from "../components/overview/ATSScoreCard";
+import MatchScoreCard from "../components/job-match/MatchScoreCard";
 
 import type { ResumeAnalysis } from "../types/resume";
 
@@ -90,11 +92,27 @@ function Home() {
   <>
     <OverviewSection overview={analysis.overview} />
 
+  {analysis && (
+  <>
+    <div className="mx-auto mt-10 grid max-w-6xl gap-6 lg:grid-cols-2">
+      <ATSScoreCard score={analysis.overview.atsScore} />
+
+      {analysis.jobMatch && (
+        <MatchScoreCard
+          score={analysis.jobMatch.matchScore}
+        />
+      )}
+    </div>
+
+    <OverviewSection overview={analysis.overview} />
+
     {analysis.jobMatch && (
       <JobMatchSection
         jobMatch={analysis.jobMatch}
       />
     )}
+  </>
+)}
   </>
 )}
     </div>

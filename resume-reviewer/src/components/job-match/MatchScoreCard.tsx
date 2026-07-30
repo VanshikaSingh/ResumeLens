@@ -11,7 +11,7 @@ function MatchScoreCard({ score }: Props) {
       : "text-red-600";
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+  <div className="h-full rounded-2xl border border-gray-200 bg-white p-8 shadow-lg">
       <h3 className="text-lg font-semibold text-gray-700">
         Match Score
       </h3>

@@ -13,14 +13,14 @@ type Props = {
 
 function JobMatchSection({ jobMatch }: Props) {
   return (
-   <section className="mt-12">
+  <section className="mt-12">
   <h2 className="mb-8 text-3xl font-bold">
     🎯 Job Match Analysis
   </h2>
 
-  <div className="space-y-6">
-    <MatchScoreCard score={jobMatch.matchScore} />
+  <MatchScoreCard score={jobMatch.matchScore} />
 
+  <div className="mt-8 grid gap-8 lg:grid-cols-2">
     <MatchedSkillsCard
       skills={jobMatch.matchedSkills}
     />
@@ -37,9 +37,11 @@ function JobMatchSection({ jobMatch }: Props) {
       experienceGap={jobMatch.experienceGap}
     />
 
-    <TopImprovementsCard
-      improvements={jobMatch.topImprovements}
-    />
+    <div className="lg:col-span-2">
+      <TopImprovementsCard
+        improvements={jobMatch.topImprovements}
+      />
+    </div>
   </div>
 </section>
   );
