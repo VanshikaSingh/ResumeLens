@@ -7,6 +7,7 @@ import OverviewSection from "../components/overview/OverviewSection";
 import JobMatchSection from "../components/job-match/JobMatchSection";
 import ATSScoreCard from "../components/overview/ATSScoreCard";
 import MatchScoreCard from "../components/job-match/MatchScoreCard";
+import LoadingScreen from "../components/LoadingScreen";
 
 import type { ResumeAnalysis } from "../types/resume";
 
@@ -69,24 +70,50 @@ function Home() {
 
   return (
     <div className="min-h-screen p-8">
-     <UploadScreen
-  onFileSelect={handleFileSelect}
-  isLoading={isLoading}
-/>
+  {!analysis ? (
+  <>
+    <UploadScreen
+      onFileSelect={handleFileSelect}
+      isLoading={isLoading}
+    />
 
-<div className="mt-8 max-w-4xl mx-auto">
-  <label className="block text-lg font-semibold mb-2">
-    Job Description (Optional)
-  </label>
+    <div className="mt-8 max-w-4xl mx-auto">
+      <label className="block mb-2 text-lg font-semibold">
+        Job Description (Optional)
+      </label>
 
-  <textarea
-    value={jobDescription}
-    onChange={(e) => setJobDescription(e.target.value)}
-    placeholder="Paste the job description here..."
-    rows={10}
-    className="w-full rounded-lg border border-gray-300 p-4 resize-y"
-  />
-</div>
+      <textarea
+        value={jobDescription}
+        onChange={(e) => setJobDescription(e.target.value)}
+        placeholder="Paste the job description here..."
+        rows={10}
+        className="w-full resize-y rounded-lg border border-gray-300 p-4"
+      />
+    </div>
+  </>
+) : (
+  <div className="mx-auto mt-8 flex max-w-6xl items-center justify-between rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+    <div>
+      <h2 className="text-2xl font-bold">
+        Resume Analysis
+      </h2>
+
+      <p className="mt-1 text-gray-500">
+        Your AI analysis is ready.
+      </p>
+    </div>
+
+    <button
+      onClick={() => {
+        setAnalysis(null);
+        setJobDescription("");
+      }}
+      className="rounded-lg bg-blue-600 px-5 py-3 font-medium text-white transition hover:bg-blue-700"
+    >
+      New Analysis
+    </button>
+  </div>
+)}
 
 {analysis && (
   <>
@@ -115,6 +142,7 @@ function Home() {
 )}
   </>
 )}
+{isLoading && <LoadingScreen />}
     </div>
   );
 }
