@@ -1,3 +1,5 @@
+import { ChartColumn } from "lucide-react";
+
 type ATSScoreCardProps = {
   score: number;
 };
@@ -19,32 +21,31 @@ export default function ATSScoreCard({
   }
 
   return (
-   <div className="h-full rounded-2xl border border-gray-200 bg-white p-8 shadow-lg">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-medium uppercase tracking-wide text-gray-500">
-            ATS Score
-          </p>
+<div className="flex items-start justify-between">
+  <div>
+    <div className="flex items-center gap-2">
+      <ChartColumn className="h-5 w-5 text-blue-600" />
 
-          <h2 className="mt-3 text-6xl font-bold text-blue-600">
-            {score}
-            <span className="text-3xl text-gray-400">
-              {" "}
-              / 10
-            </span>
-          </h2>
-
-          <p className="mt-3 text-gray-600">
-            {percentage}% ATS compatibility
-          </p>
-        </div>
-
-        <span
-          className={`rounded-full px-4 py-2 text-sm font-semibold ${badgeColor}`}
-        >
-          {badge}
-        </span>
-      </div>
+      <p className="text-sm font-medium uppercase tracking-wide text-gray-500">
+        ATS Score
+      </p>
     </div>
+
+    <h2 className="mt-4 text-6xl font-bold text-blue-600">
+      {score}
+      <span className="text-3xl text-gray-400"> / 10</span>
+    </h2>
+
+    <p className="mt-3 text-gray-600">
+      {percentage}% ATS compatibility
+    </p>
+  </div>
+
+  <span
+    className={`rounded-full px-4 py-2 text-sm font-semibold ${badgeColor}`}
+  >
+    {badge}
+  </span>
+</div>
   );
 }

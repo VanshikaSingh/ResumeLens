@@ -1,5 +1,5 @@
 import type { MissingSkill } from "../../types/resume";
-
+import { CircleX } from "lucide-react";
 type Props = {
   skills: MissingSkill[];
 };
@@ -8,9 +8,13 @@ function MissingSkillsCard({ skills }: Props) {
   return (
 
     <div className="rounded-xl border border-red-200 bg-red-50 p-6 shadow-sm">
-      <h3 className="mb-4 text-xl font-semibold text-red-800">
-        ❌ Missing Skills
-      </h3>
+     <div className="mb-4 flex items-center gap-3">
+  <CircleX className="h-6 w-6 text-red-700" />
+
+  <h3 className="text-xl font-semibold text-red-800">
+    Missing Skills
+  </h3>
+</div>
 
       <div className="space-y-3">
         {skills.map((skill) => (

@@ -1,5 +1,7 @@
 import type { Improvement } from "../../types/resume";
 
+import { TriangleAlert } from "lucide-react";
+
 type Props = {
   improvements: Improvement[];
 };
@@ -7,9 +9,13 @@ type Props = {
 function TopImprovementsCard({ improvements }: Props) {
   return (
     <div className="rounded-xl border border-purple-200 bg-purple-50 p-6 shadow-sm">
-      <h3 className="mb-4 text-xl font-semibold text-purple-800">
-        🚀 Top Improvements
-      </h3>
+     <div className="mb-4 flex items-center gap-3">
+  <TriangleAlert className="h-6 w-6 text-indigo-700" />
+
+  <h3 className="text-xl font-semibold text-indigo-800">
+    Top Improvements
+  </h3>
+</div>
 
       <div className="space-y-4">
         {improvements.map((improvement) => (

@@ -29,46 +29,49 @@ function Home() {
   const [jobDescription, setJobDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleFileSelect = async (selectedFile: File) => {
-    setFile(selectedFile);
-    setIsLoading(true);
+  const handleFileSelect = (selectedFile: File) => {
+  setFile(selectedFile);
+};
 
-    try {
-      const rawText =
-        selectedFile.type === "application/pdf"
-          ? await extractPdfText(selectedFile)
-          : await docsParser(selectedFile);
+const handleAnalyze = async () => {
+  if (!file) return;
 
-      const parsedResume = parseResume(rawText);
+  setIsLoading(true);
 
-      setResumeData(parsedResume);
+  try {
+    const rawText =
+      file.type === "application/pdf"
+        ? await extractPdfText(file)
+        : await docsParser(file);
 
-      const response = await fetch("http://localhost:3000/analyze", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          resume: parsedResume,
-            jobDescription: jobDescription.trim() || undefined,
-        }),
-      });
+    const parsedResume = parseResume(rawText);
 
-      if (!response.ok) {
-        throw new Error("Failed to analyze resume");
-      }
+    setResumeData(parsedResume);
 
-      const analysis: ResumeAnalysis = await response.json();
+    const response = await fetch("http://localhost:3000/analyze", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        resume: parsedResume,
+        jobDescription: jobDescription.trim() || undefined,
+      }),
+    });
 
-      setAnalysis(analysis);
-
-     
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
+    if (!response.ok) {
+      throw new Error("Failed to analyze resume");
     }
-  };
+
+    const analysis: ResumeAnalysis = await response.json();
+
+    setAnalysis(analysis);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setIsLoading(false);
+  }
+};
   const resetAnalysis = () => {
   setAnalysis(null);
   setJobDescription("");
@@ -81,27 +84,59 @@ if (isLoading) {
 }
   return (
     <div className="min-h-screen p-8">
-  {!analysis ? (
-  <>
-    <UploadScreen
-      onFileSelect={handleFileSelect}
-      isLoading={isLoading}
-    />
+{!analysis ? (
+  <div className="mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6">
+    <div className="mb-12 text-center">
+      <h1 className="text-5xl font-extrabold tracking-tight text-gray-900">
+        ResumeLens AI
+      </h1>
 
-    <div className="mt-8 max-w-4xl mx-auto">
-      <label className="block mb-2 text-lg font-semibold">
-        Job Description (Optional)
-      </label>
-
-      <textarea
-        value={jobDescription}
-        onChange={(e) => setJobDescription(e.target.value)}
-        placeholder="Paste the job description here..."
-        rows={10}
-        className="w-full resize-y rounded-lg border border-gray-300 p-4"
-      />
+      <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-gray-600">
+        Get instant ATS feedback, identify missing skills, and compare your
+        resume against any job description using AI.
+      </p>
     </div>
-  </>
+
+    <div className="w-full rounded-2xl border border-gray-200 bg-white p-8 shadow-lg">
+      <UploadScreen
+        onFileSelect={handleFileSelect}
+        isLoading={isLoading}
+      />
+{file && (
+  <div className="mt-5 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700">
+    Selected: <span className="font-medium">{file.name}</span>
+  </div>
+)}
+      <div className="mt-10">
+        <label className="mb-3 block text-lg font-semibold text-gray-800">
+          Job Description
+          <span className="ml-2 text-sm font-normal text-gray-500">
+            (Optional)
+          </span>
+        </label>
+
+        <textarea
+          value={jobDescription}
+          onChange={(e) => setJobDescription(e.target.value)}
+          placeholder="Paste the job description here..."
+          rows={8}
+          className="w-full resize-none rounded-xl border border-gray-300 p-4 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+        />
+<div className="mt-4 flex justify-end">
+  <button
+    onClick={handleAnalyze}
+    disabled={!file}
+    className="rounded-xl bg-blue-600 px-8 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-300"
+  >
+    Analyze Resume
+  </button>
+</div>
+        <p className="mt-2 text-sm text-gray-500">
+          Leave this blank if you only want a general resume review.
+        </p>
+      </div>
+    </div>
+  </div>
 ) : (
   <div className="mx-auto mt-8 flex max-w-6xl items-center justify-between rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
     <div>

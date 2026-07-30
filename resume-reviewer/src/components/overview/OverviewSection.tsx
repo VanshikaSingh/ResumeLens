@@ -21,7 +21,7 @@ export default function OverviewSection({
       <div className="mt-8 grid gap-8 lg:grid-cols-2">
         <div>
           <h3 className="mb-4 text-2xl font-semibold">
-            💪 Strengths
+            Strengths
           </h3>
 
           <div className="space-y-4">
@@ -36,7 +36,7 @@ export default function OverviewSection({
 
         <div>
           <h3 className="mb-4 text-2xl font-semibold">
-            ⚠️ Weaknesses
+             Weaknesses
           </h3>
 
           <div className="space-y-4">

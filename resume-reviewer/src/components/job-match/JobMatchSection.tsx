@@ -1,6 +1,7 @@
 import type { JobMatchAnalysis } from "../../types/resume";
 
-import MatchScoreCard from "./MatchScoreCard";
+import { Target } from "lucide-react";
+
 import MatchedSkillsCard from "./MatchedSkillsCard";
 import MissingSkillsCard from "./MissingSkillsCard";
 import MissingKeywordsCard from "./MissingKeywordsCard";
@@ -13,37 +14,38 @@ type Props = {
 
 function JobMatchSection({ jobMatch }: Props) {
   return (
-  <section className="mt-12">
-  <h2 className="mb-8 text-3xl font-bold">
-    🎯 Job Match Analysis
+    <section className="mx-auto mt-16 max-w-6xl">
+      <div className="mb-8 flex items-center gap-3">
+  <Target className="h-8 w-8 text-blue-600" />
+
+  <h2 className="text-3xl font-bold">
+    Job Match Analysis
   </h2>
+</div>
+<div className="grid gap-8 lg:grid-cols-2">
+  <MatchedSkillsCard skills={jobMatch.matchedSkills} />
 
-  <MatchScoreCard score={jobMatch.matchScore} />
+  <MissingSkillsCard skills={jobMatch.missingSkills} />
 
-  <div className="mt-8 grid gap-8 lg:grid-cols-2">
-    <MatchedSkillsCard
-      skills={jobMatch.matchedSkills}
-    />
-
-    <MissingSkillsCard
-      skills={jobMatch.missingSkills}
-    />
-
-    <MissingKeywordsCard
-      keywords={jobMatch.missingKeywords}
-    />
-
+  <div className="lg:col-span-2">
     <ExperienceGapCard
       experienceGap={jobMatch.experienceGap}
     />
-
-    <div className="lg:col-span-2">
-      <TopImprovementsCard
-        improvements={jobMatch.topImprovements}
-      />
-    </div>
   </div>
-</section>
+
+  <div className="lg:col-span-2">
+    <MissingKeywordsCard
+      keywords={jobMatch.missingKeywords}
+    />
+  </div>
+
+  <div className="lg:col-span-2">
+    <TopImprovementsCard
+      improvements={jobMatch.topImprovements}
+    />
+  </div>
+</div>
+    </section>
   );
 }
 

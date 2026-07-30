@@ -1,6 +1,8 @@
 import type { MissingKeyword } from "../../types/resume";
 import StatusBadge from "../common/StatusBadge";
 
+import { SearchX } from "lucide-react";
+
 type Props = {
   keywords: MissingKeyword[];
 };
@@ -8,24 +10,24 @@ type Props = {
 function MissingKeywordsCard({ keywords }: Props) {
   return (
     <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-6 shadow-sm">
-      <h3 className="mb-4 text-xl font-semibold text-yellow-800">
-        🏷️ Missing Keywords
-      </h3>
+      <div className="mb-4 flex items-center gap-3">
+  <SearchX className="h-6 w-6 text-yellow-700" />
 
-      <div className="space-y-3">
-        {keywords.map((keyword) => (
-          <div
-            key={keyword.keyword}
-            className="flex items-center justify-between rounded-lg border border-yellow-100 bg-white p-3"
-          >
-            <span className="font-medium text-gray-800">
-              {keyword.keyword}
-            </span>
+  <h3 className="text-xl font-semibold text-yellow-800">
+    Missing Keywords
+  </h3>
+</div>
 
-            <StatusBadge importance={keyword.importance} />
-          </div>
-        ))}
-      </div>
+<div className="flex flex-wrap gap-3">
+  {keywords.map((keyword) => (
+    <span
+      key={keyword.keyword}
+      className="rounded-full bg-white px-4 py-2 text-sm font-medium shadow-sm"
+    >
+      {keyword.keyword}
+    </span>
+  ))}
+</div>
     </div>
   );
 }
