@@ -90,6 +90,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/analyze", async (req, res) => {
+  
   try {
     const { resume, jobDescription } = req.body;
 
@@ -117,9 +118,12 @@ app.post("/analyze", async (req, res) => {
   } catch (error) {
     console.error("❌ Error:", error);
 
-    res.status(500).json({
-      error: "Failed to analyze resume.",
-    });
+  res.status(500).json({
+  error:
+    error instanceof Error
+      ? error.message
+      : "Internal server error",
+});
   }
 });
 
