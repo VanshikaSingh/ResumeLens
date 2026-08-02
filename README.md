@@ -1,5 +1,8 @@
-# resume-reviewer<img width="898" height="773" alt="Screenshot 2026-08-02 at 6 53 14 PM" src="https://github.com/user-attachments/assets/70a19ba4-bff1-4b10-b487-5fcfd14ec6fa" />
+# ResumeLens AI
 
+![ResumeLens Demo](./demo/resumelens-demo.gif)
+
+ResumeLens AI is an AI-powered resume analysis platform...
 
 ResumeLens AI is an AI-powered resume analysis platform that helps job seekers improve their resumes by providing ATS feedback, identifying missing skills, and comparing resumes against job descriptions.
 
@@ -85,27 +88,6 @@ The application combines document parsing, AI-powered analysis, and an intuitive
                         ▼
           ResumeLens AI Dashboard
 ```
-
----
-
-# Screenshots
-
-
-## Landing Page
-
-
-
----
-
-## Resume Overview
-
-> Add screenshot here
-
----
-
-## Job Match Analysis
-
-> Add screenshot here
 
 ---
 
@@ -205,19 +187,6 @@ ResumeLens-AI
 └── README.md
 ```
 
----
-
-## Future Improvements
-
-- AI-powered resume bullet rewriting
-- Interactive resume editor
-- Cover letter generation
-- Resume version comparison
-- Download optimized resume
-- User authentication
-- Saved analysis history
-- Dark mode
-- Drag-and-drop resume upload
 
 ---
 
