@@ -1,195 +1,73 @@
-# ResumeLens AI
+# React + TypeScript + Vite
 
-![ResumeLens Demo](./demo/resumelens-demo.gif)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-ResumeLens AI is an AI-powered resume analysis platform...
+Currently, two official plugins are available:
 
-ResumeLens AI is an AI-powered resume analysis platform that helps job seekers improve their resumes by providing ATS feedback, identifying missing skills, and comparing resumes against job descriptions.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-The application combines document parsing, AI-powered analysis, and an intuitive dashboard to generate structured, actionable feedback for improving resumes.
+## React Compiler
 
----
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Features
+## Expanding the ESLint configuration
 
-### Resume Analysis
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-- Upload resumes in PDF, DOC, or DOCX format
-- AI-powered ATS compatibility analysis
-- ATS score (0–10)
-- Resume strengths
-- Resume weaknesses
-- Personalized improvement recommendations
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-### Job Match Analysis
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-- Compare resume against any job description
-- Job match score
-- Matched skills
-- Missing skills
-- Missing keywords
-- Experience gap analysis
-- Top prioritized improvements
-
-### User Experience
-
-- Responsive dashboard
-- Smooth animations with Framer Motion
-- Loading screen during AI analysis
-- Friendly error handling
-- Clean, modern UI
-
----
-
-## Tech Stack
-
-### Frontend
-
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Framer Motion
-
-### Backend
-
-- Node.js
-- Express
-- OpenAI Responses API
-- Zod
-
-### Document Parsing
-
-- react-pdftotext
-- Mammoth
-
----
-
-## Architecture
-
-```text
-                  Resume Upload
-                        │
-                        ▼
-             PDF / DOC / DOCX Parsing
-                        │
-                        ▼
-           Structured Resume Sections
-                        │
-                        ▼
-              Node.js + Express API
-                        │
-                        ▼
-              OpenAI Responses API
-                        │
-                        ▼
-         Structured JSON Response (Zod)
-                        │
-                        ▼
-          ResumeLens AI Dashboard
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
----
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-## Getting Started
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/resumelens-ai.git
-cd resumelens-ai
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-
----
-
-### 2. Install dependencies
-
-Frontend
-
-```bash
-npm install
-```
-
-Backend
-
-```bash
-cd server
-npm install
-```
-
----
-
-### 3. Create a `.env` file
-
-Inside the **server** folder, create a file named:
-
-```text
-.env
-```
-
-Add your OpenAI API key:
-
-```env
-OPENAI_API_KEY=your_openai_api_key
-```
-
-This key is required for the backend to communicate with the OpenAI API.
-
----
-
-### 4. Start the backend
-
-```bash
-cd server
-npm run dev
-```
-
----
-
-### 5. Start the frontend
-
-```bash
-npm run dev
-```
-
-Open your browser and visit:
-
-```
-http://localhost:5173
-```
-
----
-
-## Project Structure
-
-```text
-ResumeLens-AI
-│
-├── src
-│   ├── components
-│   │   ├── overview
-│   │   ├── job-match
-│   │   └── common
-│   │
-│   ├── pages
-│   ├── types
-│   ├── utils
-│   └── assets
-│
-├── server
-│   ├── prompts
-│   ├── schemas
-│   ├── services
-│   └── index.ts
-│
-├── public
-│
-└── README.md
-```
-
-
----
-
-## License
-
-This project is licensed under the MIT License.
