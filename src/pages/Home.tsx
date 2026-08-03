@@ -24,7 +24,6 @@ export type ParsedResume = {
 
 function Home() {
   const [file, setFile] = useState<File | null>(null);
-  const [resumeData, setResumeData] = useState<ParsedResume | null>(null);
   const [analysis, setAnalysis] = useState<ResumeAnalysis | null>(null);
   const [jobDescription, setJobDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +38,6 @@ function Home() {
 
     setError("");
     setAnalysis(null);
-    setResumeData(null);
     setFile(selectedFile);
   };
 
@@ -56,18 +54,19 @@ function Home() {
 
       const parsedResume = parseResume(rawText);
 
-      setResumeData(parsedResume);
-
-      const response = await fetch("https://resumelens-api-mddg.onrender.com/analyze", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          resume: parsedResume,
-          jobDescription: jobDescription.trim() || undefined,
-        }),
-      });
+      const response = await fetch(
+        "https://resumelens-api-mddg.onrender.com/analyze",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            resume: parsedResume,
+            jobDescription: jobDescription.trim() || undefined,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const data = await response.json();
@@ -106,7 +105,6 @@ function Home() {
     setAnalysis(null);
     setJobDescription("");
     setFile(null);
-    setResumeData(null);
     setError("");
   };
 

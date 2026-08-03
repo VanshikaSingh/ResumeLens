@@ -1,4 +1,13 @@
-import type { ResumeSections } from "../types/resume";
+
+interface ResumeSections {
+  summary: string;
+  skills: string;
+  experience: string;
+  education: string;
+  projects: string;
+  certifications: string;
+}
+
 //component where string transforms to ResumeSections
 const sectionPatterns = {
   summary: /^(summary|professional summary)$/i, // JS objects

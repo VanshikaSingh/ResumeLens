@@ -1,5 +1,5 @@
 import type { MissingKeyword } from "../../types/resume";
-import StatusBadge from "../common/StatusBadge";
+
 
 import { SearchX } from "lucide-react";
 
