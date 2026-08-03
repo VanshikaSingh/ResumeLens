@@ -1,73 +1,152 @@
-# React + TypeScript + Vite
+# ResumeLens
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered resume reviewer that helps job seekers improve their resumes, understand ATS compatibility, and identify gaps between their resume and a job description.
 
-Currently, two official plugins are available:
+![ResumeLens Demo](demo/resumelens-demo.gif)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Resume Analysis
+- Upload PDF and DOCX resumes
+- Automatic resume parsing
+- ATS score
+- Strengths and weaknesses
+- Actionable recommendations
+- Section-by-section feedback
 
-## Expanding the ESLint configuration
+### Job Match Analysis
+- Paste a job description
+- Resume-to-job match score
+- Missing keywords
+- Missing skills
+- Experience gap analysis
+- Top improvement suggestions
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Modern UI
+- Responsive interface
+- Drag-and-drop resume upload
+- Loading animations
+- Clean dashboard
+- Interactive analysis cards
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Frontend
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Framer Motion
+
+### Backend
+- Node.js
+- Express
+- OpenAI API
+
+### Resume Parsing
+- pdfjs-dist
+- Mammoth (DOCX)
+
+---
+
+## Project Structure
+
+```
+ResumeLens
+│
+├── api/
+├── demo/
+├── public/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── server/
+│   ├── types/
+│   └── utils/
+│
+├── package.json
+└── README.md
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Getting Started
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/VanshikaSingh/resume-reviewer.git
+cd resume-reviewer
 ```
+
+### 2. Install frontend dependencies
+
+```bash
+npm install
+```
+
+### 3. Install backend dependencies
+
+```bash
+cd src/server
+npm install
+cd ../..
+```
+
+---
+
+## Environment Variables
+
+Create:
+
+```
+src/server/.env
+```
+
+Add your OpenAI API key:
+
+```env
+OPENAI_API_KEY=your_api_key_here
+```
+
+---
+
+## Run the Frontend
+
+```bash
+npm run dev
+```
+
+Runs on:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Run the Backend
+
+Open a second terminal:
+
+```bash
+cd src/server
+npm start
+```
+
+Runs on:
+
+```
+http://localhost:3000
+```
+
+---
+
+
+## License
+
+MIT
