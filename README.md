@@ -2,7 +2,7 @@
 
 An AI-powered resume reviewer that helps job seekers improve their resumes, understand ATS compatibility, and identify gaps between their resume and a job description.
 
-![ResumeLens Demo](demo/resumelens-demo.gif)
+![ResumeLens Demo](demo/resumeLens-demo-v2.gif)
 
 ---
 
