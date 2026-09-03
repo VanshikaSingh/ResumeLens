@@ -55,3 +55,19 @@ export type ResumeAnalysis = {
   overview: Overview;
   jobMatch: JobMatchAnalysis | null;
 };
+
+export interface ResumeLink {
+  label: string;
+  url: string;
+}
+
+export interface ParsedResume {
+  header: string;
+  links: ResumeLink[];
+  summary: string;
+  skills: string;
+  experience: string;
+  education: string;
+  projects: string;
+  certifications: string;
+}

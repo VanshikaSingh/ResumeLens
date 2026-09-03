@@ -8,19 +8,11 @@ import JobMatchSection from "../components/job-match/JobMatchSection";
 import ATSScoreCard from "../components/overview/ATSScoreCard";
 import MatchScoreCard from "../components/job-match/MatchScoreCard";
 import LoadingScreen from "../components/LoadingScreen";
+import type { ResumeLink } from "../types/resume";
 
 import { motion } from "framer-motion";
 
 import type { ResumeAnalysis } from "../types/resume";
-
-export type ParsedResume = {
-  summary: string;
-  skills: string;
-  experience: string;
-  education: string;
-  projects: string;
-  certifications: string;
-};
 
 function Home() {
   const [file, setFile] = useState<File | null>(null);
@@ -47,12 +39,21 @@ function Home() {
     setIsLoading(true);
 
     try {
-      const rawText =
-        file.type === "application/pdf"
-          ? await extractPdfText(file)
-          : await docsParser(file);
+          let rawText: string;
+          let links: ResumeLink[] = [];
 
-      const parsedResume = parseResume(rawText);
+          if (file.type === "application/pdf") {
+            const pdfResult = await extractPdfText(file);
+
+            rawText = pdfResult.text;
+            links = pdfResult.links;
+          } else {
+            rawText = await docsParser(file);
+          }
+
+          const parsedResume = parseResume(rawText);
+
+          parsedResume.links = links;
 
       const response = await fetch(
         "https://resumelens-api-mddg.onrender.com/analyze",

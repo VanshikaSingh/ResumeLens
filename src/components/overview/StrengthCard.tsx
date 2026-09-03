@@ -13,9 +13,6 @@ export default function StrengthCard({
   return (
     <div className="rounded-xl border border-green-200 bg-green-50 p-5 shadow-sm">
       <div className="flex items-start gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-600 text-white">
-          ✓
-        </div>
 
         <div>
           <h3 className="text-lg font-semibold text-green-900">

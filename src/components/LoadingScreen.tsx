@@ -24,8 +24,6 @@ export default function LoadingScreen() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-6">
       <div className="w-full max-w-xl text-center">
-        <div className="mb-8 text-6xl">🤖</div>
-
         <h1 className="text-4xl font-bold">
           ResumeLens AI
         </h1>

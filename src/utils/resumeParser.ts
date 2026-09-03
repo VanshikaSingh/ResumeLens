@@ -1,12 +1,4 @@
-
-interface ResumeSections {
-  summary: string;
-  skills: string;
-  experience: string;
-  education: string;
-  projects: string;
-  certifications: string;
-}
+import type { ParsedResume } from "../types/resume";
 
 //component where string transforms to ResumeSections
 const sectionPatterns = {
@@ -18,7 +10,8 @@ const sectionPatterns = {
   certifications: /^(certifications|licenses)$/i,
 };
 export const parseResume = (resumeText: string) => {
-    const sections: ResumeSections = {
+    const sections: ParsedResume = {
+        header: "",
         summary: "",
         skills: "",
         experience: "",
@@ -26,22 +19,15 @@ export const parseResume = (resumeText: string) => {
         projects: "",
         certifications: "",
     };
+const normalizedText = resumeText
+    .replace(/\b(SUMMARY|SKILLS|EXPERIENCE|EDUCATION|PROJECTS|CERTIFICATIONS)\b/g, "\n$1\n");
 
-    const normalizedText = resumeText
-        .replace(/\bSUMMARY\b/gi, "\nSUMMARY\n") // \b means match whole words only: Match only the whole word SUMMARY
-        .replace(/\bSKILLS\b/gi, "\nSKILLS\n") // \n means inserting line breaks around SKILLS so text before and after it breaks into new lines
-        .replace(/\bEXPERIENCE\b/gi, "\nEXPERIENCE\n") // \g means all EXPERIENCE gets replaced
-        .replace(/\bEDUCATION\b/gi, "\nEDUCATION\n")// \i means ignore capitalization
-        .replace(/\bPROJECTS\b/gi, "\nPROJECTS\n")
-          .replace(/\bCERTIFICATIONS\b/gi, "\nCERTIFICATIONS\n")
+const lines = normalizedText
+    .split("\n")
+    .map(line => line.trim())
+    .filter(Boolean);
 
-
-    const lines = normalizedText
-        .split("\n")
-        .map(line => line.trim())
-        .filter(Boolean); //split text into lines;
-
-    let currentSection: keyof ResumeSections | "" = "";
+   let currentSection: keyof ParsedResume = "header";
   
     //check if the line is a Heading
     for (const line of lines) {
