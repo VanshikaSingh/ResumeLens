@@ -56,7 +56,7 @@ function Home() {
           parsedResume.links = links;
 
 const response = await fetch(
-  `${import.meta.env.VITE_API_URL}/analyze`,
+  `${import.meta.env.VITE_API_URL}/analyze`, 
   {
     method: "POST",
     headers: {
