@@ -51,6 +51,16 @@ An AI-powered resume reviewer that helps job seekers improve their resumes, unde
 - pdfjs-dist
 - Mammoth (DOCX)
 
+### AI Concepts Implemented
+- LLM API integration
+- Prompt engineering
+- Structured LLM outputs
+- Constrained generation
+- Zod-based AI output validation
+- AI-powered document analysis
+- Typed AI → application data pipeline
+- AI-driven prioritization
+- Single-document LLM reasoning
 ---
 
 ## Project Structure
