@@ -27,10 +27,27 @@ export default async function extractPdfText(
 
       const textContent = await page.getTextContent();
 
-      text +=
-        textContent.items
-          .map((item) => ("str" in item ? item.str : ""))
-          .join(" ") + "\n";
+  const items = textContent.items.filter(
+  (item): item is typeof item & { str: string; transform: number[] } =>
+    "str" in item && "transform" in item
+);
+
+let previousY: number | null = null;
+
+for (const item of items) {
+  const y = item.transform[5];
+
+  if (previousY !== null && Math.abs(y - previousY) > 2) {
+    text += "\n";
+  } else if (text.length > 0) {
+    text += " ";
+  }
+
+  text += item.str;
+  previousY = y;
+}
+
+text += "\n";
 
       const annotations = await page.getAnnotations();
 

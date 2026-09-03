@@ -59,25 +59,27 @@ const ResumeAnalysisSchema = z.object({
       )
       .length(3),
 
-    weaknesses: z
-      .array(
-        z.object({
-          section: z.string(),
-          issue: z.string(),
-          severity: z.enum(["low", "medium", "high"]),
-        })
-      )
-      .length(3),
+ weaknesses: z
+  .array(
+    z.object({
+      section: z.string(),
+      issue: z.string(),
+      severity: z.enum(["low", "medium", "high"]),
+    })
+  )
+  .min(1)
+  .max(3),
 
-    suggestions: z
-      .array(
-        z.object({
-          section: z.string(),
-          recommendation: z.string(),
-          priority: z.enum(["high", "medium", "low"]),
-        })
-      )
-      .length(3),
+ suggestions: z
+  .array(
+    z.object({
+      section: z.string(),
+      recommendation: z.string(),
+      priority: z.enum(["high", "medium", "low"]),
+    })
+  )
+  .min(1)
+  .max(3),
   }),
 
   jobMatch: JobMatchAnalysisSchema.nullable(),
