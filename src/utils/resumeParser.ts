@@ -16,6 +16,7 @@ export const parseResume = (resumeText: string) => {
         skills: "",
         experience: "",
         education: "",
+        links: [],
         projects: "",
         certifications: "",
     };
